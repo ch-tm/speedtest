@@ -1,4 +1,5 @@
 #!/bin/bash
+LANG=C
 
 # data reported to main thread
 testStatus=0 # 0=not started, 1=download test, 2=ping+jitter test, 3=upload test, 4=finished, 5=abort/error
@@ -83,7 +84,7 @@ ulTest() {
     fi
 
     # upload the file using curl
-    uploadResult=$(curl -o /dev/null -s -w "%{time_total} %{size_upload} %{speed_upload}" -F "file=@upload.tmp" "$url_ul?r=$RANDOM")
+    uploadResult=$(curl -o /dev/null -H Expect: -s -w "%{time_total} %{size_upload} %{speed_upload}" -F "file=@upload.tmp" "$url_ul?r=$RANDOM")
 
     duration=$(echo "$uploadResult" | awk '{print $1}')
     totLoaded=$(echo "$uploadResult" | awk '{print $2}')
